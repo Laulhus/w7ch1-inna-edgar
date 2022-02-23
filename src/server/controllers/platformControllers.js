@@ -16,6 +16,8 @@ const createPlatform = async (req, res, next) => {
       next(error);
     }
   } catch (error) {
+    error.code = 500;
+    error.message = "Couldn't create document";
     next(error);
   }
 };
