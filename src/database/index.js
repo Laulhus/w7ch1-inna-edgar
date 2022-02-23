@@ -4,6 +4,7 @@ const chalk = require("chalk");
 
 const connectDataBase = (connectionString) =>
   new Promise((resolve, reject) => {
+    mongoose.set("returnOriginal", false);
     mongoose.set("debug", true);
     mongoose.set("toJSON", {
       virtuals: true,

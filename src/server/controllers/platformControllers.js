@@ -22,4 +22,43 @@ const createPlatform = async (req, res, next) => {
   }
 };
 
-module.exports = { getPlatforms, createPlatform };
+const updatePlatform = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const platform = req.body;
+    const updatedPlatform = await Platform.findByIdAndUpdate(id, platform);
+    if (!updatedPlatform) {
+      const error = new Error("Platform not found");
+      error.code = 404;
+      next(error);
+    } else {
+      res.json(updatedPlatform);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deletePlatform = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedPlatform = await Platform.findByIdAndDelete(id);
+    if (!deletedPlatform) {
+      const error = new Error("Platform not found");
+      error.code = 404;
+      next(error);
+    } else {
+      res.json(deletedPlatform);
+    }
+  } catch (error) {
+    error.code = 400;
+    next(error);
+  }
+};
+
+module.exports = {
+  getPlatforms,
+  createPlatform,
+  updatePlatform,
+  deletePlatform,
+};
