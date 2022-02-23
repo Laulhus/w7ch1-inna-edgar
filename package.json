@@ -6,7 +6,8 @@
   "scripts": {
     "coverage": "jest --watchAll --coverage",
     "start": "node .",
-    "start-dev": "nodemon . -q"
+    "start-dev": "nodemon . -q",
+    "test": "jest --watchAll"
   },
   "repository": {
     "type": "git",
