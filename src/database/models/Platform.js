@@ -5,9 +5,6 @@ const platformSchema = new Schema({
     type: String,
     required: true,
   },
-  series: {
-    type: Array,
-  },
 });
 
 const Platform = model("Platform", platformSchema, "platforms");
