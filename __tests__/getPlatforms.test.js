@@ -1,8 +1,10 @@
 const Platform = require("../src/database/models/Platform");
-const getPlatforms = require("../src/server/controllers/getPlatforms");
+const {
+  getPlatforms,
+} = require("../src/server/controllers/platformControllers");
 
 describe("Given a getPlatforms controller", () => {
-  describe("When in receives a response", () => {
+  describe("When it receives a response", () => {
     test("Then it should call the response json method with an array of platforms", async () => {
       const res = {
         json: jest.fn(),
