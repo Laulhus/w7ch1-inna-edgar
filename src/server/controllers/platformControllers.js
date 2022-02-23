@@ -52,7 +52,13 @@ const deletePlatform = async (req, res, next) => {
     }
   } catch (error) {
     error.code = 400;
+    next(error);
   }
 };
 
-module.exports = { getPlatforms, createPlatform, updatePlatform };
+module.exports = {
+  getPlatforms,
+  createPlatform,
+  updatePlatform,
+  deletePlatform,
+};

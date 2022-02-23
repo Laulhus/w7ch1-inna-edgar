@@ -3,6 +3,7 @@ const {
   createPlatform,
   getPlatforms,
   updatePlatform,
+  deletePlatform,
 } = require("../controllers/platformControllers");
 
 const platformRouter = express.Router();
