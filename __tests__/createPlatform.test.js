@@ -44,10 +44,6 @@ describe("Given a createPlatform controller", () => {
       const req = {
         body: { name: "Netflix" },
       };
-      const error = {
-        code: 400,
-        message: "Invalid data format",
-      };
       Platform.create = jest.fn().mockResolvedValue(null);
 
       await createPlatform(req, null, next);
