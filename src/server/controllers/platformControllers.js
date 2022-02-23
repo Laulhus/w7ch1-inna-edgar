@@ -28,8 +28,8 @@ const updatePlatform = async (req, res, next) => {
     const platform = req.body;
     const updatedPlatform = await Platform.findByIdAndUpdate(id, platform);
     if (!updatedPlatform) {
-      const error = new Error("Invalid data format");
-      error.code = 400;
+      const error = new Error("Platform not found");
+      error.code = 404;
       next(error);
     } else {
       res.json(updatedPlatform);
@@ -39,4 +39,26 @@ const updatePlatform = async (req, res, next) => {
   }
 };
 
-module.exports = { getPlatforms, createPlatform, updatePlatform };
+const deletePlatform = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedPlatform = await Platform.findByIdAndDelete(id);
+    if (!deletedPlatform) {
+      const error = new Error("Platform not found");
+      error.code = 404;
+      next(error);
+    } else {
+      res.json(deletedPlatform);
+    }
+  } catch (error) {
+    error.code = 400;
+    next(error);
+  }
+};
+
+module.exports = {
+  getPlatforms,
+  createPlatform,
+  updatePlatform,
+  deletePlatform,
+};
