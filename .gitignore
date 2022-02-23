@@ -1,0 +1,5 @@
+.editorconfig
+.env
+node_modules
+.scannerwork
+coverage
