@@ -5,12 +5,13 @@ const {
   updatePlatform,
   deletePlatform,
 } = require("../controllers/platformControllers");
+const isAdmin = require("../middlewares/isAdmin");
 
 const platformRouter = express.Router();
 
 platformRouter.get("/", getPlatforms);
-platformRouter.post("/", createPlatform);
-platformRouter.put("/:idPlatform", updatePlatform);
-platformRouter.delete("/:idPlatform", deletePlatform);
+platformRouter.post("/", isAdmin, createPlatform);
+platformRouter.put("/:idPlatform", isAdmin, updatePlatform);
+platformRouter.delete("/:idPlatform", isAdmin, deletePlatform);
 
 module.exports = platformRouter;
