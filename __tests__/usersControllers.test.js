@@ -12,8 +12,8 @@ describe("Given a userLogin controller", () => {
       };
       const next = jest.fn();
       const error = new Error("User not found");
-
-      User.findById = jest.fn().mockResolvedValue(null);
+      error.code = 401;
+      User.findOne = jest.fn().mockResolvedValue(null);
 
       await userLogin(req, null, next);
 
