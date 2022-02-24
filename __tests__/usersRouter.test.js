@@ -1,37 +1,27 @@
 require("dotenv").config();
-const request = require("supertest");
 const { MongoMemoryServer } = require("mongodb-memory-server");
-const mongoose = require("mongoose");
+const { default: mongoose } = require("mongoose");
+const request = require("supertest");
+const bcrypt = require("bcrypt");
 const connectDataBase = require("../src/database");
 const User = require("../src/database/models/User");
-const { app } = require("..");
+const app = require("../src/server");
 
-let mongoServer;
+let mongo;
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const connectionString = mongoServer.getUri();
+  mongo = await MongoMemoryServer.create();
+  const connectionString = mongo.getUri();
+
   await connectDataBase(connectionString);
 });
 
 beforeEach(async () => {
+  const cryptPassword = await bcrypt.hash("testpass", 10);
   await User.create({
-    name: "Lila",
-    username: "superLila",
-    password: "$2b$10$pwxjOnj5C03DCc1qIPQoQOO952.1XDULGOWGVfRTdEJ9Mu4ReLFjK",
-    admin: true,
-  });
-  await User.create({
-    name: "Sam",
-    username: "superSam",
-    password: "l$2b$10$0RZnrivM9Ruzkguthufok.ynDLnEWQ3FsBdY4Db5pTYXnG5SlJXie",
-    admin: false,
-  });
-  await User.create({
-    name: "Tom",
-    username: "superTom",
-    password: "$2b$10$aB8gaaXny2b4n8vfEtm1bOImgzG8m0j4qMnTh4wy5Eqdr/fSWOOd6",
-    admin: false,
+    name: "Testman",
+    username: "testUser",
+    password: cryptPassword,
   });
 });
 
@@ -41,16 +31,16 @@ afterEach(async () => {
 
 afterAll(async () => {
   await mongoose.connection.close();
-  await mongoServer.stop();
+  await mongo.stop();
 });
 
 describe("Given a /users/login/ endpoint", () => {
-  describe("When it receives a GET request with valid username and password", () => {
-    test.only("Then it should respond with 200 status code and token", async () => {
+  describe("When it receives a POST request with valid username and password", () => {
+    test("Then it should respond with 200 status code and token", async () => {
       const user = {
-        name: "Lila",
-        username: "superLila",
-        password: "rosa",
+        name: "Testman",
+        username: "testUser",
+        password: "testpass",
         admin: true,
       };
 
@@ -60,6 +50,22 @@ describe("Given a /users/login/ endpoint", () => {
         .expect(200);
 
       expect(body).toHaveProperty("token");
+    });
+  });
+
+  describe("When it receives a POST request with invalid username and password", () => {
+    test("Then it should respond with 401 status code", async () => {
+      const user = {
+        name: "Testman",
+        username: "testUser",
+        password: "testpassa",
+        admin: true,
+      };
+
+      const { body } = await request(app)
+        .post("/users/login")
+        .send(user)
+        .expect(401);
     });
   });
 });

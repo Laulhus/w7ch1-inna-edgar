@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "coverage": "jest --watchAll --coverage",
+    "coverage": "jest --watchAll --coverage --detectOpenHandles",
     "start": "node .",
     "start-dev": "nodemon . -q",
     "test": "jest --watchAll"
