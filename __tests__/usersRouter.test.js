@@ -54,18 +54,42 @@ describe("Given a /users/login/ endpoint", () => {
   });
 
   describe("When it receives a POST request with invalid username and password", () => {
-    test("Then it should respond with 401 status code", async () => {
+    test("Then it should respond with 401 status code error message 'User not found'", async () => {
       const user = {
         name: "Testman",
-        username: "testUser",
+        username: "Testman",
         password: "testpassa",
         admin: true,
       };
+      const expectedErrorMessage = "User not found";
 
       const { body } = await request(app)
         .post("/users/login")
         .send(user)
         .expect(401);
+
+      expect(body).toHaveProperty("error");
+      expect(body.message).toBe(expectedErrorMessage);
+    });
+  });
+
+  describe("When it receives a POST request with valid username and invalid password", () => {
+    test("Then it should respond with 401 code and error message 'Invalid password'", async () => {
+      const user = {
+        name: "Testman",
+        username: "testUser",
+        password: "lsadfklkdf",
+        admin: true,
+      };
+      const expectedErrorMessage = "Invalid password";
+
+      const { body } = await request(app)
+        .post("/users/login")
+        .send(user)
+        .expect(401);
+
+      expect(body).toHaveProperty("error");
+      expect(body.message).toBe(expectedErrorMessage);
     });
   });
 });
