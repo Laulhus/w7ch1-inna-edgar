@@ -93,3 +93,23 @@ describe("Given a /users/login/ endpoint", () => {
     });
   });
 });
+
+describe("Given a /users/register/ endpoint", () => {
+  describe("When it receives a POST request with a user", () => {
+    test("Then it should respond with 200 and the user", async () => {
+      const newUser = {
+        name: "Tim",
+        username: "supertim",
+        password: "lalala",
+        series: [],
+      };
+
+      const { body } = await request(app)
+        .post("/users/register")
+        .send(newUser)
+        .expect(200);
+
+      expect(body.username).toBe(newUser.username);
+    });
+  });
+});
