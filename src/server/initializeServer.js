@@ -7,8 +7,12 @@ const initializeServer = (port, app) =>
       debug(chalk.greenBright(`Server listening on http://localhost:${port}`));
       resolve();
     });
-
-    server.on("error", (error) => reject(error));
+    server.on("error", (error) => {
+      const errorMessage = `Couldn't start the server.${
+        error.code === "EADDRINUSE" ? ` Port ${port} in use` : ""
+      }`;
+      reject(new Error(errorMessage));
+    });
   });
 
 module.exports = initializeServer;
