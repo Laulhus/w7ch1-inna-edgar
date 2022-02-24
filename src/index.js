@@ -1,6 +1,7 @@
 require("dotenv").config();
 const chalk = require("chalk");
 const debug = require("debug")("series");
+
 const connectDataBase = require("./database");
 const initializeServer = require("./server/initializeServer");
 const app = require("./server/index");
