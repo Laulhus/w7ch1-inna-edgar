@@ -16,10 +16,10 @@ const UserSchema = new Schema({
   },
   admin: {
     type: Boolean,
-    required: true,
   },
   series: {
-    type: Array,
+    type: [Schema.Types.ObjectId],
+    ref: "Serie",
   },
 });
 
