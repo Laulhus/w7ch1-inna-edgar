@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 const auth = (req, res, next) => {
-  const headerAuth = req.header("Authoriation");
+  const headerAuth = req.header("Authorization");
   if (!headerAuth) {
     const error = new Error("Token missing");
     error.code = 401;
@@ -11,7 +11,8 @@ const auth = (req, res, next) => {
     try {
       jwt.verify(token, process.env.JWT_SECRET);
       next();
-    } catch (error) {
+    } catch {
+      const error = new Error("Invalid signature");
       error.code = 401;
       next(error);
     }
