@@ -48,7 +48,8 @@
       "src/**/*.js",
       "!src/**/*.test.js",
       "!src/**/initializeServer.js",
-      "!src/index.js"
+      "!src/index.js",
+      "!src/database/index.js"
     ]
   }
 }
